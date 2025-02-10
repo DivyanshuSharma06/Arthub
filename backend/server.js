@@ -2,6 +2,7 @@
 const express = require("express");
 const cors = require("cors");
 const dotenv = require("dotenv");
+const cookieParser = require("cookie-parser");
 
 // Load environment variables
 dotenv.config();
@@ -19,6 +20,8 @@ const app = express();
 // Middleware to parse JSON bodies and handle CORS
 app.use(express.json());
 app.use(cors());
+app.use(cookieParser());
+
 
 // Serve static files (e.g., uploaded images)
 app.use("/uploads", express.static("uploads"));
@@ -28,7 +31,7 @@ const authRoutes = require("./routes/auth");
 const artworkRoutes = require("./routes/artwork");
 const orderRoutes = require("./routes/order");
 const commissionRoutes = require("./routes/commission");
-const promotionRoutes = require("./routes/promotion");
+// const promotionRoutes = require("./routes/promotion");
 
 // Public routes (do not require authentication)
 app.use("/api/v1/auth", authRoutes);
@@ -38,7 +41,7 @@ app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/artworks", verifyToken, artworkRoutes);
 app.use("/api/v1/orders", verifyToken, orderRoutes);
 app.use("/api/v1/commissions", verifyToken, commissionRoutes);
-app.use("/api/v1/promotions", verifyToken, promotionRoutes);
+// app.use("/api/v1/promotions", verifyToken, promotionRoutes);
 
 // Global error handling middleware (should be the last middleware)
 app.use(errorHandler);
