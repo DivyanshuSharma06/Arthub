@@ -6,7 +6,7 @@ const jwtConfig = require("../config/jwt");
 
 exports.signup = async (req, res) => {
   try {
-    const { name, email, password, isArtist } = req.body;
+    const { name, email, password, isArtist, bio, portfolio, socialLinks, profilePicture } = req.body;
     if (!name || !email || !password) {
       return res.status(400).json({ error: "Invalid request body" });
     }
@@ -17,14 +17,31 @@ exports.signup = async (req, res) => {
     }
     // Hash password and save user
     const hashedPassword = await bcrypt.hash(password, 10);
+    if (isArtist) {
+      let profile = {
+        bio: bio || '',
+        portfolio: portfolio || '',
+        socialLinks: Array.isArray(socialLinks) || [],
+        profilePicture: profilePicture || ''
+      }
+      const user = new User({
+        name,
+        email,
+        password: hashedPassword,
+        isArtist: isArtist || false,
+        profile
+      });
+      await user.save();
+      return res.status(201).json({ message: "User registered successfully" });
+    }
     const user = new User({
       name,
       email,
       password: hashedPassword,
-      isArtist: isArtist || false,
+      isArtist: false
     });
     await user.save();
-    res.status(201).json({ message: "User registered successfully" });
+    return res.status(201).json({ message: "User registered successfully" });
   } catch (error) {
     console.error("Signup error:", error);
     res.status(500).json({ error: "Server error" });

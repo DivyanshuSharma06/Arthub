@@ -31,6 +31,7 @@ const authRoutes = require("./routes/auth");
 const artworkRoutes = require("./routes/artwork");
 const orderRoutes = require("./routes/order");
 const commissionRoutes = require("./routes/commission");
+const artistsRoutes = require("./routes/artists");
 // const promotionRoutes = require("./routes/promotion");
 
 // Public routes (do not require authentication)
@@ -41,6 +42,7 @@ app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/artworks", verifyToken, artworkRoutes);
 app.use("/api/v1/orders", verifyToken, orderRoutes);
 app.use("/api/v1/commissions", verifyToken, commissionRoutes);
+app.use("/api/v1/artists", verifyToken, artistsRoutes);
 // app.use("/api/v1/promotions", verifyToken, promotionRoutes);
 
 // Global error handling middleware (should be the last middleware)

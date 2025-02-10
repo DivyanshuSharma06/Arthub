@@ -1,5 +1,6 @@
 // backend/controllers/orderController.js
 const Order = require("../models/Order");
+const Artwork = require("../models/Artwork")
 
 exports.createOrder = async (req, res) => {
   try {
@@ -16,14 +17,15 @@ exports.createOrder = async (req, res) => {
 
     // In a production app, you would fetch artwork details (title, artist, price) by artworkId.
     // For demonstration purposes, we'll use dummy values.
+    const artDetails = await Artwork.findById(artworkId, 'title artist price')
     const order = new Order({
       buyerEmail,
       shippingAddress,
       paymentMethod,
       artworkId,
-      artworkTitle: "Sample Artwork Title",
-      artworkArtist: "Sample Artist",
-      price: 100, // Dummy price value
+      artworkTitle: artDetails?.title || "",
+      artworkArtist: artDetails?.artist || "",
+      price: artDetails?.price || 0,
     });
 
     await order.save();

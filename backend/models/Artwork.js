@@ -17,7 +17,7 @@ const ArtworkSchema = new mongoose.Schema(
     },
     image: {
       type: String,
-      required: [true, "Image is required"],
+      required: [false, "Image is required"],
     },
     medium: {
       type: String,
